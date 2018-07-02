@@ -10,7 +10,7 @@ public class ViewController {
  
     @RequestMapping("/")
     public String home(Map<String, Object> model) {
-        model.put("message", "World !");
+        model.put("message", "HighChart Client");
         return "index";
     }
      
