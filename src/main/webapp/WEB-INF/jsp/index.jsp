@@ -20,10 +20,27 @@
 		 
 	    /* attach a submit handler to the form */
 	    $("#my_form").submit(function(event) {
-
 	    	event.preventDefault(); //prevent default action 
 	    	printGraphAndBaselines()
 	    });
+	    
+	    /* attach hide/show behaviour to last year baseline */
+	    $('#myLastYearConsumptionCheckbox').change(function() {
+		    if (!$(this).is(':checked')) 
+		    		$('#container').highcharts().yAxis[0].plotLinesAndBands[0].options.width=0;
+		    else
+		    	$('#container').highcharts().yAxis[0].plotLinesAndBands[0].options.width=2;
+		    $('#container').highcharts().yAxis[0].update();
+		});
+	    
+	    /* attach hide/show behaviour to last year baseline */
+	    $('#myNeighborhoodConsumptionCheckbox').change(function() {
+		    if (!$(this).is(':checked')) 
+		    		$('#container').highcharts().yAxis[0].plotLinesAndBands[1].options.width=0;
+		    else
+		    	$('#container').highcharts().yAxis[0].plotLinesAndBands[1].options.width=2;
+		    $('#container').highcharts().yAxis[0].update();
+		});
 });
 </script>
 </head>
@@ -48,15 +65,18 @@
 							class="validity"></span></td>
 					</tr>
 					<tr>
-						<td><div id="baseline1">
+						<td><div id="baseline0">
 								Last Year: <span id="myLastYearConsumption"></span> liters
-							</div></td>
+								<input type="checkbox" id="myLastYearConsumptionCheckbox" checked/> <img alt="dashed red line" src="/img/dash_red.png" width="11%">
+							</div>
+						</td>
 					</tr>
 					<tr>
-						<td><div id="baseline2">
-								Neighborhood: <span id="myNeighborhoodConsumption"></span>
-								liters
-							</div></td>
+						<td><div id="baseline1">
+								Neighborhood: <span id="myNeighborhoodConsumption"></span> liters
+								<input type="checkbox" id="myNeighborhoodConsumptionCheckbox" checked /> <img alt="dashed blue line" src="/img/dash_blue.png" width="11%">
+							</div>
+						</td>
 					</tr>
 
 				</table>
