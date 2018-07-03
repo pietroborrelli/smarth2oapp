@@ -16,8 +16,8 @@
 	$(function() {
 
 		/* default graph*/
-		printGraphAndBaselines();
-		 
+		printDefaultGraphAndBaselines();
+
 	    /* attach a submit handler to the form */
 	    $("#my_form").submit(function(event) {
 	    	event.preventDefault(); //prevent default action 
@@ -41,6 +41,12 @@
 		    	$('#container').highcharts().yAxis[0].plotLinesAndBands[1].options.width=2;
 		    $('#container').highcharts().yAxis[0].update();
 		});
+	    
+	    
+		
+	    
+	    
+
 });
 </script>
 </head>
@@ -54,9 +60,9 @@
 				title="" method="POST">
 				<table>
 					<tr>
-						<td><label class="title">Smart meter name</label> <input
-							type="text" id="smart_meter_name" name="smart_meter_name"
-							value="CH_AQU_50992045"></td>
+						<td> <label class="title">Smart meter name</label>
+							<select id="smart_meter_name" name="smart_meter_name"></select>
+						</td>
 						<td><label>Data inizio</label> <input type="datetime-local"
 							value="2016-01-01T00:00" id="startDate"> <span
 							class="validity"></span></td>

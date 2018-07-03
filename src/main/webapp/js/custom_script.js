@@ -1,18 +1,38 @@
 const M_CUBE_TO_LITER = 1000;
 
 /* 
+ * Default graph loaded
+ */
+function printDefaultGraphAndBaselines(){
+	$.when( requestRESTSmartMeterList('http://localhost:8082/register/smartMeterList','GET') ).then(function(){
+		$.when( requestRESTBaselineMyNeighborhood('http://localhost:8082/baseline/myNeighborhood','POST'),
+				requestRESTBaselineLastYear('http://localhost:8082/baseline/lastYear','POST')).then(
+				function (myNeighborhoodResponse, lastYearResponse) {
+					$('#myNeighborhoodConsumption').html(myNeighborhoodResponse[0]);
+					$('#myLastYearConsumption').html(lastYearResponse[0]);
+					requestRESTRegisters('http://localhost:8082/register/list','POST');
+				}).fail(
+						function (error) {
+							alert(error.responseText);
+						}
+						);
+	});
+} 
+/* 
  * get first baselines before build graph
  */
 function printGraphAndBaselines(){
-	$.when(requestRESTBaselineMyNeighborhood('http://localhost:8082/baseline/myNeighborhood','POST'), 
-			requestRESTBaselineLastYear('http://localhost:8082/baseline/lastYear','POST')).then(
-			function (myNeighborhoodResponse, lastYearResponse) {
-				$('#myNeighborhoodConsumption').html(myNeighborhoodResponse[0]);
-				$('#myLastYearConsumption').html(lastYearResponse[0]);
-				requestRESTRegisters('http://localhost:8082/register/list','POST');
-			}
-	
-	);
+		$.when( requestRESTBaselineMyNeighborhood('http://localhost:8082/baseline/myNeighborhood','POST'),
+				requestRESTBaselineLastYear('http://localhost:8082/baseline/lastYear','POST')).then(
+				function (myNeighborhoodResponse, lastYearResponse) {
+					$('#myNeighborhoodConsumption').html(myNeighborhoodResponse[0]);
+					$('#myLastYearConsumption').html(lastYearResponse[0]);
+					requestRESTRegisters('http://localhost:8082/register/list','POST');
+				}).fail(
+						function (error) {
+							alert(error.responseText);
+						}
+						);
 } 
 
 function buildGraph(data) {
@@ -96,8 +116,10 @@ function requestRESTRegisters(url, request_method) {
 		}),
 		contentType : "application/json",
 		success : function(data) {
-			
 			buildGraph(data);
+		},
+		error : function(error){
+			alert(error.responseText);
 		}
 	});
 }
@@ -129,5 +151,27 @@ function requestRESTBaselineMyNeighborhood(url, request_method) {
 			endDate : $('#endDate').val()
 		}),
 		contentType : "application/json"
+	});
+}
+
+/* ajax call for smart meter list */
+function requestRESTSmartMeterList(url, request_method) {
+
+	return $.ajax({
+		url : url,
+		type : request_method,
+		cache:true,
+		contentType : "application/json",
+		success : function(data){
+			// Populate dropdown
+			/* attach smart meter list to dropdown menu */
+		    let dropdown = $('#smart_meter_name');
+		    dropdown.empty();
+		    dropdown.append('<option value = "CH_AQU_50992045" selected="true">CH_AQU_50992045</option>');
+		    dropdown.prop('selectedIndex', 0);
+		      $.each(data, function (index,value) {
+		    	dropdown.append('<option value=' + value + '>' + value + '</option>');
+		      });
+		}
 	});
 }
