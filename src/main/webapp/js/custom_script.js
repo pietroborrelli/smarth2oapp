@@ -52,7 +52,7 @@ function buildGraph(data) {
 		},
 
 		title : {
-			text : 'Water Consumption'
+			text : ''
 		},
 		yAxis : {
 			min : 0,
